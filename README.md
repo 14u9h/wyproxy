@@ -8,8 +8,8 @@ HTTP/HTTPS, Socks5代理服务器, 并可以将网络请求记录保存到后台
 
 同时支持流量handle回放数据功能,    
 在HTTP Header中插入 移动/联通/电信 营业厅的免流量域名头, 实现免流量代理上网。   
-   
-演示服务器：http://s5.wuyun.org:5000   
+
+~~演示服务器：http://s5.wuyun.org:5000~~   
 
 支持场景    
 - iPhone App
@@ -39,7 +39,7 @@ optional arguments:
 
 记录字段如下   
 
-![github](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/captrue.png "github")   
+![github](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/captrue.png"github")   
 
 - method    (HTTP/HTTPS/OPTIONS)
 - scheme    (http/https/ftp)
@@ -57,17 +57,17 @@ optional arguments:
 - date_start       (unix timestamp)
 - date_end         (unix timestamp)
 
-## 环境要求
-- CentOS 6.4
-- Python 2.7
-- Mysql Server
+## 环境要求 (更改简化，使用CentOS 7 快人一步)
+- CentOS 7
+- Python 2.7 → 系统自带，如不自带，自行安装
+- MariaDB→ CentOS7，为避甲骨文收购Mysql后闭源风险，故设MariaDB分支，安装依旧可愉快使Mysql
 
 ### 开发环境依赖
 ```bash
 $ yum install python-devel libxml2-devel libxslt-devel libjpeg-turbo-devel libffi-devel mysql-devel
 ```
 
-### 编译安装Python2.7环境
+### ~~编译安装Python2.7环境~~
 ```
 $ wget https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz
 $ tar zvxf Python-2.7.8.tgz
@@ -78,16 +78,18 @@ $ make install
 $ mv /usr/bin/python /usr/bin/python2.6.6  
 $ ln -s /usr/local/bin/python2.7 /usr/bin/python
 ```
-重启bash终端, 就拥有新的Python2.7环境了
+~~重启bash终端, 就拥有新的Python2.7环境了~~
 
-### 安装新的Python2.7环境下的pip
-https://pip.pypa.io/en/latest/installing/
+### ~~安装新的Python2.7环境下的pip~~
+~~https://pip.pypa.io/en/latest/installing/~~
+
 ```bash
 $ wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
 $ python get-pip.py
 ```
 
-yum在Python2.7环境下无法使用，需要让它使用python2.6.6的环境
+~~yum在Python2.7环境下无法使用，需要让它使用python2.6.6的环境~~
+
 ```bash
 $ vim /usr/bin/yum # 修改第一行的程序执行环境
 #!/usr/bin/python   ->    #!/usr/bin/python2.6.6
@@ -106,23 +108,23 @@ $ git clone https://github.com/ring04h/wyproxy.git
 $ pip install -r requirements.txt
 ```
 
-### 安装MYSQL数据库
+### 安装MariaDB 使用MYSQL数据库
 ```bash
-$ yum install mysql-server
-$ service mysqld start
+$ yum install mariadb-server mariadb 
+$ systemctl start mariadb
 $ mysql -uroot -p < wyproxy.sql
 ```
 
 ### 性能优化
 MYSQL配置调优, 有时候网页的content内容size大于1M,    
 需要修改MYSQL配置调优的全局配置文件max_allowed_packet, 允许插入的数据大小为64M.   
-   
+
 ```bash
 $ vim /etc/my.cnf
 [mysqld] # 位置
 max_allowed_packet = 64M
 ```
-   
+
 Open Max file option:    
 
 ```bash
@@ -142,12 +144,12 @@ $ source bin/activate
 
 ### 启动wyproxy
 > 如果不想将代理记录保存到数据库, 必须指定 -us 或者 --unsave 参数
-   
+
 普通方式启动   
 
 ```bash
 $ python wyproxy.py -p 8080 -m socks5 --unsave
-```   
+```
 
 守护进程方式启动
 
@@ -157,28 +159,28 @@ $ python wyproxy.py -p 8080 -m socks5 --unsave -d
 
 ### 支持HTTPS, 需要配置客户端 SSL 证书
 #### iPhone 移动端, 使用Safari浏览器打开
-https://raw.githubusercontent.com/ring04h/wyproxy/master/ssl/mitmproxy-ca.pem    
+https://raw.githubusercontent.com/14u9h/wyproxy/master/ssl/mitmproxy-ca.pem    
 会有如下图片提示, 点击右上角安装, 使证书状态变为绿色生效
 
 安装界面    
     
-![install_pem](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/install_pem.png)
+![install_pem](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/install_pem.png)
 
 成功后的界面   
 
-![install_pem_succ](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/install_pem_succ.png)   
+![install_pem_succ](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/install_pem_succ.png)   
 
 #### Mac OS X 安装配置 SSL 证书 并信任
 ```bash
-$ wget https://raw.githubusercontent.com/ring04h/wyproxy/master/ssl/mitmproxy-ca.pem
+$ wget https://raw.githubusercontent.com/14u9h/wyproxy/master/ssl/mitmproxy-ca.pem
 ```
 在Finder中双击运行mitmproxy-ca.pem
 
 进入钥匙串访问工具, 选择mitmproxy的证书
-![key_manager](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/key_manager.png "key_manager")   
-   
+![key_manager](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/key_manager.png"key_manager")   
+
 选择始终信任该证书, 即可生效, 便能成功捕捉所有HTTPS的流量
-![key_trust](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/key_trust.png "key_trust")   
+![key_trust](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/key_trust.png"key_trust")   
 
 ### iPhone配置全局Socks5代理支持   
 用代理自动配置文件pac给iPhone和iPad设备添加socks代理    
@@ -188,7 +190,7 @@ $ wget https://raw.githubusercontent.com/ring04h/wyproxy/master/ssl/mitmproxy-ca
 ```
 $ python wyproxy.py -p 8080 -m socks5 -d
 ```
-    
+
 找一台开启了HTTPD服务的服务器, 新建一个.pac文件, 内容如下    
     
 ```pac
@@ -200,18 +202,18 @@ function FindProxyForURL(url, host)
     return "SOCKS 106.75.147.67:8080";
 }
 ```
-     
+
 设置iPhone的无线配置, 代理处填上你的HTTPD服务器地址    
 http://s5.wuyun.org/s5.pac   
 
-![enable_s5](https://raw.githubusercontent.com/ring04h/wyproxy/master/doc/screenshot/enable_s5.png "enable_s5")   
+![enable_s5](https://raw.githubusercontent.com/14u9h/wyproxy/master/doc/screenshot/enable_s5.png"enable_s5")   
     
 这样iPhone上面, 所有的流量，全都会经过wyproxy的socks5代理了
 
 ## 使用技巧
 ### 在单服务器运行多个代理服务
 运行socks5服务, 监听1080端口   
-   
+
 ```bash
 $ python wyproxy.py -p 1080 -m socks5 -pid /tmp/1080.pid -d
 wyproxy daemon starting...
@@ -222,15 +224,15 @@ wyProxy daemon started successfully
 ```
 
 停止1080端口的服务   
-   
+
 ```bash
 $ python wyproxy.py -stop -pid /tmp/1080.pid
 wyproxy daemon stopping...
 wyproxy daemon stopped successfully
 ```
-   
+
 运行socks5服务, 监听1081端口   
-   
+
 ```bash
 $ python wyproxy.py -p 1081 -m socks5 -pid /tmp/1081.pid -d
 wyproxy daemon starting...
@@ -241,21 +243,21 @@ wyProxy daemon started successfully
 ```
 
 停止1081端口的服务   
-   
+
 ```bash
 $ python wyproxy.py -stop -pid /tmp/1081.pid
 wyproxy daemon stopping...
 wyproxy daemon stopped successfully
 ```
-   
+
 # PPTP VPN support
 ## wyproxy代理服务器设置
 做NAT代理转发,必须启动代理服务器的模式为 transparent   
-   
+
 ```shell
 $ python wyproxy.py -p 8080 -m transparent -d
 ```
-   
+
 ## 安装pptp服务器
 安装PPP, PPTP   
 ```
@@ -298,7 +300,7 @@ $ chkconfig iptables on
 ```
 
 ## 设置iptables防火墙转发   
-   
+
 ```bash
 $ iptables -t nat -A PREROUTING -s 10.8.0.0/24 -i ppp+ -p tcp -m multiport --dports 80,81,82,83,88,8000,8001,8002,8080,8081,8090 -j DNAT --to-destination 10.8.0.1:8080
 $ iptables -t nat -A PREROUTING -s 10.8.0.0/24 -i ppp+ -p tcp -m multiport --dports 443,8443 -j DNAT --to-destination 10.8.0.1:8080

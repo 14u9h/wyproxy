@@ -58,7 +58,7 @@ optional arguments:
 - date_end         (unix timestamp)
 
 ## 环境要求 (使用CentOS 7 快人一步)
-- CentOS 7
+- ~~CentOS 6.4~~ → CentOS 7
 - Python 2.7 → 系统自带，如不自带，自行安装
 - MariaDB→ CentOS7，为避甲骨文收购Mysql后闭源风险，故设MariaDB分支，安装依旧可愉快使Mysql
 

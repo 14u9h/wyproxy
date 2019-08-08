@@ -64,7 +64,7 @@ optional arguments:
 
 ### 开发环境依赖
 ```bash
-$ yum install python-devel libxml2-devel libxslt-devel libjpeg-turbo-devel libffi-devel mysql-devel
+$ yum install python-devel libxml2-devel libxslt-devel libjpeg-turbo-devel libffi-devel mysql-devel gcc
 ```
 
 ### ~~编译安装Python2.7环境~~
@@ -80,8 +80,8 @@ $ ln -s /usr/local/bin/python2.7 /usr/bin/python
 ```
 ~~重启bash终端, 就拥有新的Python2.7环境了~~
 
-### ~~安装新的Python2.7环境下的pip~~
-~~https://pip.pypa.io/en/latest/installing/~~
+### 安装新的Python2.7环境下的pip
+https://pip.pypa.io/en/latest/installing/
 
 ```bash
 $ wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
